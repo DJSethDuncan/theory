@@ -1,5 +1,6 @@
 import type { TQuestion } from "@/modules/question";
 import IntervalQuestion from "./intervalQuestion";
+import MultipleSelectQuestion from "./multipleSelectQuestion";
 import { useState, useEffect } from "react";
 
 export default function Question({
@@ -9,40 +10,8 @@ export default function Question({
   question: TQuestion;
   onSubmit: () => void;
 }) {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-
-  const handleOptionChange = (option: string) => {
-    setSelectedOptions((prev) => {
-      if (prev.includes(option)) {
-        return prev.filter((item) => item !== option);
-      }
-      return [...prev, option];
-    });
-    setIsCorrect(null);
-    setHasSubmitted(false);
-  };
-
-  const handleSubmit = () => {
-    let isAnswerCorrect = false;
-    switch (question.type) {
-      case "msq":
-        const selectedOptionsAreCorrect = selectedOptions.every((option) =>
-          question.msqCorrectAnswers.includes(option)
-        );
-
-        const unselectedOptionsAreCorrect = question.msqOptions
-          .filter((option) => !selectedOptions.includes(option))
-          .every((option) => !question.msqCorrectAnswers.includes(option));
-
-        isAnswerCorrect =
-          selectedOptionsAreCorrect && unselectedOptionsAreCorrect;
-        setIsCorrect(isAnswerCorrect);
-        setHasSubmitted(true);
-        break;
-    }
-  };
 
   const clearCheckedBoxes = () => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -53,7 +22,6 @@ export default function Question({
   };
 
   useEffect(() => {
-    setSelectedOptions([]);
     clearCheckedBoxes();
     setIsCorrect(null);
     setHasSubmitted(false);
@@ -66,22 +34,12 @@ export default function Question({
         <div className="text-sm text-gray-500 mb-4">{question.extraText}</div>
       )}
       {question.type === "msq" && (
-        <div className="space-y-2">
-          {question.msqOptions.map((option) => (
-            <label
-              key={option}
-              className="flex items-center space-x-2 cursor-pointer"
-            >
-              <input
-                type="checkbox"
-                checked={selectedOptions.includes(option)}
-                onChange={() => handleOptionChange(option)}
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="font-mono">{option}</span>
-            </label>
-          ))}
-        </div>
+        <MultipleSelectQuestion
+          question={question}
+          answerCheck={setIsCorrect}
+          hasSubmitted={hasSubmitted}
+          setHasSubmitted={setHasSubmitted}
+        />
       )}
       {question.type === "interval" && (
         <IntervalQuestion

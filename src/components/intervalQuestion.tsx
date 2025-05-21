@@ -4,6 +4,8 @@ import { scoreIntervals } from "@/modules/intervals";
 import type { TIntervalQuestion } from "@/modules/question";
 import { Dispatch, SetStateAction, useState } from "react";
 
+// @TODO: this should change to a "fretboard" question of which "Interval" is a subtype
+// maybe someday there is a "keyboard" question type that shows piano keys
 export default function IntervalQuestion({
   question,
   hasSubmitted,
@@ -20,7 +22,7 @@ export default function IntervalQuestion({
   >([]);
 
   const handleSubmit = () => {
-    let isAnswerCorrect = scoreIntervals(selectedIntervals, question.meta);
+    const isAnswerCorrect = scoreIntervals(selectedIntervals, question.meta);
     answerCheck(isAnswerCorrect);
     setHasSubmitted(true);
   };
