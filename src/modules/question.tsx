@@ -7,6 +7,7 @@ export type TQuestionType = "modes";
 export type TQuestion = {
   type: TQuestionType;
   question: string;
+  extraText?: string;
   correctAnswers: string[];
   options: string[];
 };

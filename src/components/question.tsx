@@ -47,6 +47,7 @@ export default function Question({
   return (
     <div className="p-4">
       <div className="text-lg font-medium mb-4">{question.question}</div>
+      {question.extraText && <div className="text-sm text-gray-500 mb-4">{question.extraText}</div>}
       <div className="space-y-2">
         {question.options.map((option) => (
           <label key={option} className="flex items-center space-x-2 cursor-pointer">

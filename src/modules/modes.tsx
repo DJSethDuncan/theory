@@ -1,7 +1,8 @@
 import easyModes from "@/bin/modes-easy.json";
+import * as possibleIntervals from "@/bin/intervals.json";
 import type { TQuestion } from "./question";
 
-export const possibleIntervals = ["b2", "2", "#2", "b3", "3", "#3", "4", "b5", "5", "#5", "6", "m7", "M7"];
+type TModeQuestionType = "intervalMSQ" | "identify";
 
 const modesArray = Object.entries(easyModes).map(([name, data]) => ({
   name,
@@ -11,18 +12,34 @@ const modesArray = Object.entries(easyModes).map(([name, data]) => ({
 export const getModeQuestion = (): TQuestion => {
   const randomIndex = Math.floor(Math.random() * modesArray.length);
   const randomMode = modesArray[randomIndex];
-  const correctAnswersCount = Math.floor(Math.random() * 4) + 1;
-  const incorrectAnswersCount = 4 - correctAnswersCount;
+  
+  const questionType = getModeQuestionType();
 
-  const correctAnswers = getCorrectAnswers(randomMode.intervals, correctAnswersCount);
-  const incorrectAnswers = getIncorrectAnswers(randomMode.intervals, incorrectAnswersCount);
+  switch (questionType) {
+    case "intervalMSQ":
+      const correctAnswersCount = Math.floor(Math.random() * 4) + 1;
+      const incorrectAnswersCount = 4 - correctAnswersCount;
 
-  return {
-    type: "modes",
-    question: `Which intervals are in the ${randomMode.name} mode?`,
-    correctAnswers: randomMode.intervals,
-    options: [...correctAnswers, ...incorrectAnswers].sort(() => Math.random() - 0.5), // makes them random
-  };
+      const correctAnswers = getCorrectAnswers(randomMode.intervals, correctAnswersCount);
+      const incorrectAnswers = getIncorrectAnswers(randomMode.intervals, incorrectAnswersCount);
+
+      return {
+        type: "modes",
+        question: `Which intervals are in the ${randomMode.name} mode?`,
+        correctAnswers: randomMode.intervals,
+        options: [...correctAnswers, ...incorrectAnswers].sort(() => Math.random() - 0.5), // makes them random
+      };
+
+    case "identify":
+      return {
+        type: "modes",
+        question: `Which mode is this?`,
+        extraText: "R, " + randomMode.intervals.join(", "), // gotta have the root I guess
+        correctAnswers: [randomMode.name],
+        options: modesArray.map(mode => mode.name),
+      };
+  }
+
 };
 
 const getCorrectAnswers = (modeIntervals: string[], correctAnswersCount: number): string[] => {
@@ -33,4 +50,9 @@ const getCorrectAnswers = (modeIntervals: string[], correctAnswersCount: number)
 const getIncorrectAnswers = (correctAnswers: string[], incorrectAnswersCount: number): string[] => {
   const incorrectAnswers = [...new Set(possibleIntervals.filter(interval => !correctAnswers.includes(interval)))];
   return incorrectAnswers.slice(0, incorrectAnswersCount);
+};
+
+const getModeQuestionType = (): TModeQuestionType => {
+  const randomIndex = Math.floor(Math.random() * 2);
+  return randomIndex === 0 ? "intervalMSQ" : "identify";
 };
