@@ -64,7 +64,7 @@ export default function IntervalQuestion({
                   className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   data-x={colIndex}
                   data-y={rowIndex}
-                  onChange={(e) => handleIntervalChange()}
+                  onChange={() => handleIntervalChange()}
                 />
               </label>
             ))}
