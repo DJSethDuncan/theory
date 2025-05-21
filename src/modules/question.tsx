@@ -1,16 +1,24 @@
-import msq from "@/bin/msq.json";
+import { getModeQuestion } from "./modes";
 
-export type TQuestionType = "msq";
+const possibleQuestionTypes = ["modes"];
+
+export type TQuestionType = "modes";
 
 export type TQuestion = {
-  id: string;
-  question: string;
-  answers: string[];
   type: TQuestionType;
+  question: string;
+  correctAnswers: string[];
+  options: string[];
 };
 
 export const getQuestion = (): TQuestion => {
-  const randomIndex = Math.floor(Math.random() * msq.length);
-  return msq[randomIndex];
-};
+  const randomIndex = Math.floor(Math.random() * possibleQuestionTypes.length);
+  const questionType = possibleQuestionTypes[randomIndex];
 
+  switch (questionType) {
+    case "modes":
+      return getModeQuestion();
+    default:
+      throw new Error(`Unknown question type: ${questionType}`);
+  }
+};
