@@ -26,7 +26,7 @@ export const scoreIntervals = (selectedIntervals: [number, number][], questionIn
   const highestString = highestNote[1];
   const stringDifference = lowestString - highestString;
   const fretDifference = highestNote[0] - lowestNote[0];
-  let halfStepsBetweenNotes = fretDifference + (stringDifference * 5); // this doesn't account for the B string yet, ffs
+  let halfStepsBetweenNotes = fretDifference + (stringDifference * 5);
   if (highestString === 1 && lowestString > highestString) {
     halfStepsBetweenNotes--;
   }
