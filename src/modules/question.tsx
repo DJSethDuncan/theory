@@ -1,5 +1,6 @@
 import { getModeQuestion } from "./modes";
 import { getIntervalQuestion } from "./intervals";
+
 const possibleQuestionTopics = ["intervals"];
 
 type TQuestionTopic = "modes" | "intervals";
