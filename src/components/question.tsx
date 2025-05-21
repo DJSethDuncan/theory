@@ -35,10 +35,7 @@ export default function Question({
     const isAnswerCorrect = selectedOptionsAreCorrect && unselectedOptionsAreCorrect;
     setIsCorrect(isAnswerCorrect);
     setHasSubmitted(true);
-    
-    if (isAnswerCorrect) {
-      onSubmit();
-    }
+
   };
 
   useEffect(() => {
