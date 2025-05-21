@@ -1,25 +1,39 @@
 import { getModeQuestion } from "./modes";
+import { getIntervalQuestion } from "./intervals";
+const possibleQuestionTopics = ["intervals"];
 
-const possibleQuestionTypes = ["modes"];
+type TQuestionTopic = "modes" | "intervals";
+type TQuestionType = "msq" | "interval";
 
-export type TQuestionType = "modes";
-
-export type TQuestion = {
-  type: TQuestionType;
+type TBaseQuestion = {
+  topic: TQuestionTopic;
   question: string;
   extraText?: string;
-  correctAnswers: string[];
-  options: string[];
-};
+}
+
+type TMSQQuestion = TBaseQuestion & {
+  type: "msq";
+  msqCorrectAnswers: string[];
+  msqOptions: string[];
+}
+
+type TIntervalQuestion = TBaseQuestion & {
+  type: "interval";
+  meta: string;
+}
+
+export type TQuestion = TMSQQuestion | TIntervalQuestion;
 
 export const getQuestion = (): TQuestion => {
-  const randomIndex = Math.floor(Math.random() * possibleQuestionTypes.length);
-  const questionType = possibleQuestionTypes[randomIndex];
+  const randomIndex = Math.floor(Math.random() * possibleQuestionTopics.length);
+  const questionTopic = possibleQuestionTopics[randomIndex];
 
-  switch (questionType) {
+  switch (questionTopic) {
     case "modes":
       return getModeQuestion();
+    case "intervals":
+      return getIntervalQuestion();
     default:
-      throw new Error(`Unknown question type: ${questionType}`);
+      throw new Error(`Unknown question type: ${questionTopic}`);
   }
 };

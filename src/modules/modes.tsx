@@ -1,5 +1,5 @@
 import easyModes from "@/bin/modes-easy.json";
-import * as possibleIntervals from "@/bin/intervals.json";
+import intervals from "@/bin/intervals.json";
 import type { TQuestion } from "./question";
 
 type TModeQuestionType = "intervalMSQ" | "identify";
@@ -24,19 +24,21 @@ export const getModeQuestion = (): TQuestion => {
       const incorrectAnswers = getIncorrectAnswers(randomMode.intervals, incorrectAnswersCount);
 
       return {
-        type: "modes",
+        topic: "modes",
+        type: "msq",
         question: `Which intervals are in the ${randomMode.name} mode?`,
-        correctAnswers: randomMode.intervals,
-        options: [...correctAnswers, ...incorrectAnswers].sort(() => Math.random() - 0.5), // makes them random
+        msqCorrectAnswers: randomMode.intervals,
+        msqOptions: [...correctAnswers, ...incorrectAnswers].sort(() => Math.random() - 0.5), // makes them random
       };
 
     case "identify":
       return {
-        type: "modes",
+        topic: "modes",
+        type: "msq",
         question: `Which mode is this?`,
         extraText: "R, " + randomMode.intervals.join(", "), // gotta have the root I guess
-        correctAnswers: [randomMode.name],
-        options: modesArray.map(mode => mode.name),
+        msqCorrectAnswers: [randomMode.name],
+        msqOptions: modesArray.map(mode => mode.name),
       };
   }
 
@@ -48,7 +50,7 @@ const getCorrectAnswers = (modeIntervals: string[], correctAnswersCount: number)
 };
 
 const getIncorrectAnswers = (correctAnswers: string[], incorrectAnswersCount: number): string[] => {
-  const incorrectAnswers = [...new Set(possibleIntervals.filter(interval => !correctAnswers.includes(interval)))];
+  const incorrectAnswers = [...new Set(intervals.allIntervals.filter(interval => !correctAnswers.includes(interval)))];
   return incorrectAnswers.slice(0, incorrectAnswersCount);
 };
 
