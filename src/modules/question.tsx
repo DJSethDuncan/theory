@@ -1,7 +1,7 @@
 import { getModeQuestion } from "./modes";
 import { getIntervalQuestion } from "./intervals";
 
-const possibleQuestionTopics = ["modes", "intervals"];
+const possibleQuestionTopics = ["intervals"];
 
 type TQuestionTopic = "modes" | "intervals";
 
@@ -17,7 +17,7 @@ type TMSQQuestion = TBaseQuestion & {
   msqOptions: string[];
 };
 
-type TIntervalQuestion = TBaseQuestion & {
+export type TIntervalQuestion = TBaseQuestion & {
   type: "interval";
   meta: string;
 };

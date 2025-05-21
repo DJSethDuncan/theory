@@ -1,6 +1,5 @@
 import type { TQuestion } from "@/modules/question";
-import { scoreIntervals } from "@/modules/intervals";
-import { guitarStrings } from "@/modules/constants";
+import IntervalQuestion from "./intervalQuestion";
 import { useState, useEffect } from "react";
 
 export default function Question({
@@ -11,9 +10,6 @@ export default function Question({
   onSubmit: () => void;
 }) {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [selectedIntervals, setSelectedIntervals] = useState<
-    [number, number][]
-  >([]);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -26,30 +22,6 @@ export default function Question({
     });
     setIsCorrect(null);
     setHasSubmitted(false);
-  };
-
-  const handleIntervalChange = () => {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const intervals: [number, number][] = [];
-    checkboxes.forEach((checkbox) => {
-      if ((checkbox as HTMLInputElement).checked) {
-        const x = parseInt(checkbox.getAttribute("data-x") || "0");
-        const y = parseInt(checkbox.getAttribute("data-y") || "0");
-        intervals.push([x, y]);
-      }
-    });
-    setSelectedIntervals(intervals);
-    if (intervals.length === 2) {
-      checkboxes.forEach((checkbox) => {
-        if (!(checkbox as HTMLInputElement).checked) {
-          (checkbox as HTMLInputElement).disabled = true;
-        }
-      });
-    } else {
-      checkboxes.forEach((checkbox) => {
-        (checkbox as HTMLInputElement).disabled = false;
-      });
-    }
   };
 
   const handleSubmit = () => {
@@ -69,11 +41,6 @@ export default function Question({
         setIsCorrect(isAnswerCorrect);
         setHasSubmitted(true);
         break;
-      case "interval":
-        isAnswerCorrect = scoreIntervals(selectedIntervals, question.meta);
-        setIsCorrect(isAnswerCorrect);
-        setHasSubmitted(true);
-        break;
     }
   };
 
@@ -87,7 +54,6 @@ export default function Question({
 
   useEffect(() => {
     setSelectedOptions([]);
-    setSelectedIntervals([]);
     clearCheckedBoxes();
     setIsCorrect(null);
     setHasSubmitted(false);
@@ -118,33 +84,14 @@ export default function Question({
         </div>
       )}
       {question.type === "interval" && (
-        <div className="grid grid-rows-6 gap-2">
-          {[...Array(6)].map((_, rowIndex) => (
-            <div key={rowIndex} className="flex space-x-2">
-              <span className="font-mono">{guitarStrings[rowIndex]}</span>
-              {[...Array(8)].map((_, colIndex) => (
-                <label key={colIndex} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    data-x={colIndex}
-                    data-y={rowIndex}
-                    onChange={(e) => handleIntervalChange()}
-                  />
-                </label>
-              ))}
-            </div>
-          ))}
-        </div>
+        <IntervalQuestion
+          question={question}
+          answerCheck={setIsCorrect}
+          hasSubmitted={hasSubmitted}
+          setHasSubmitted={setHasSubmitted}
+        />
       )}
       <div className="mt-4 space-x-4">
-        <button
-          onClick={handleSubmit}
-          disabled={hasSubmitted}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Submit Answer
-        </button>
         {hasSubmitted && (
           <button
             onClick={onSubmit}
