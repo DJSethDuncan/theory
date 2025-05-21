@@ -1,5 +1,5 @@
 import type { TQuestion } from "@/modules/question";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Question({ 
   question, 
@@ -40,6 +40,12 @@ export default function Question({
       onSubmit();
     }
   };
+
+  useEffect(() => {
+    setSelectedOptions([]);
+    setIsCorrect(null);
+    setHasSubmitted(false);
+  }, [question]);
 
   return (
     <div className="p-4">

@@ -3,21 +3,22 @@
 import { useEffect, useState } from "react";
 import { getQuestion, type TQuestion } from "@/modules/question";
 import Question from "@/components/question";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   
   const [thisQuestion, setThisQuestion] = useState<TQuestion | null>(null);
-  const router = useRouter();
   
   useEffect(() => {
-    const question = getQuestion();
-    setThisQuestion(question);
-    console.log(question);
+    loadQuestion();
   }, []);
 
   const handleQuestionSubmit = () => {
-    router.refresh();
+    loadQuestion();
+  };
+
+  const loadQuestion = () => {
+    const question = getQuestion();
+    setThisQuestion(question);
   };
 
   return (
