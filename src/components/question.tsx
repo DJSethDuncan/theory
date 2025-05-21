@@ -1,24 +1,26 @@
 import type { TQuestion } from "@/modules/question";
 import { scoreIntervals } from "@/modules/intervals";
-import strings from "@/bin/strings.json";
+import { guitarStrings } from "@/modules/constants";
 import { useState, useEffect } from "react";
 
-export default function Question({ 
-  question, 
-  onSubmit 
-}: { 
+export default function Question({
+  question,
+  onSubmit,
+}: {
   question: TQuestion;
   onSubmit: () => void;
 }) {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [selectedIntervals, setSelectedIntervals] = useState<[number, number][]>([]);
+  const [selectedIntervals, setSelectedIntervals] = useState<
+    [number, number][]
+  >([]);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const handleOptionChange = (option: string) => {
-    setSelectedOptions(prev => {
+    setSelectedOptions((prev) => {
       if (prev.includes(option)) {
-        return prev.filter(item => item !== option);
+        return prev.filter((item) => item !== option);
       }
       return [...prev, option];
     });
@@ -29,22 +31,22 @@ export default function Question({
   const handleIntervalChange = () => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     const intervals: [number, number][] = [];
-    checkboxes.forEach(checkbox => {
+    checkboxes.forEach((checkbox) => {
       if ((checkbox as HTMLInputElement).checked) {
-        const x = parseInt(checkbox.getAttribute('data-x') || '0');
-        const y = parseInt(checkbox.getAttribute('data-y') || '0');
+        const x = parseInt(checkbox.getAttribute("data-x") || "0");
+        const y = parseInt(checkbox.getAttribute("data-y") || "0");
         intervals.push([x, y]);
       }
     });
     setSelectedIntervals(intervals);
     if (intervals.length === 2) {
-      checkboxes.forEach(checkbox => {
+      checkboxes.forEach((checkbox) => {
         if (!(checkbox as HTMLInputElement).checked) {
           (checkbox as HTMLInputElement).disabled = true;
         }
       });
     } else {
-      checkboxes.forEach(checkbox => {
+      checkboxes.forEach((checkbox) => {
         (checkbox as HTMLInputElement).disabled = false;
       });
     }
@@ -54,18 +56,19 @@ export default function Question({
     let isAnswerCorrect = false;
     switch (question.type) {
       case "msq":
-        const selectedOptionsAreCorrect = selectedOptions.every(option =>
+        const selectedOptionsAreCorrect = selectedOptions.every((option) =>
           question.msqCorrectAnswers.includes(option)
         );
 
         const unselectedOptionsAreCorrect = question.msqOptions
-          .filter(option => !selectedOptions.includes(option))
-          .every(option => !question.msqCorrectAnswers.includes(option));
+          .filter((option) => !selectedOptions.includes(option))
+          .every((option) => !question.msqCorrectAnswers.includes(option));
 
-          isAnswerCorrect = selectedOptionsAreCorrect && unselectedOptionsAreCorrect;
-          setIsCorrect(isAnswerCorrect);
-          setHasSubmitted(true);
-          break;
+        isAnswerCorrect =
+          selectedOptionsAreCorrect && unselectedOptionsAreCorrect;
+        setIsCorrect(isAnswerCorrect);
+        setHasSubmitted(true);
+        break;
       case "interval":
         isAnswerCorrect = scoreIntervals(selectedIntervals, question.meta);
         setIsCorrect(isAnswerCorrect);
@@ -76,7 +79,7 @@ export default function Question({
 
   const clearCheckedBoxes = () => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
+    checkboxes.forEach((checkbox) => {
       (checkbox as HTMLInputElement).checked = false;
       (checkbox as HTMLInputElement).disabled = false;
     });
@@ -93,11 +96,16 @@ export default function Question({
   return (
     <div className="p-4">
       <div className="text-lg font-medium mb-4">{question.question}</div>
-      {question.extraText && <div className="text-sm text-gray-500 mb-4">{question.extraText}</div>}
+      {question.extraText && (
+        <div className="text-sm text-gray-500 mb-4">{question.extraText}</div>
+      )}
       {question.type === "msq" && (
         <div className="space-y-2">
           {question.msqOptions.map((option) => (
-            <label key={option} className="flex items-center space-x-2 cursor-pointer">
+            <label
+              key={option}
+              className="flex items-center space-x-2 cursor-pointer"
+            >
               <input
                 type="checkbox"
                 checked={selectedOptions.includes(option)}
@@ -113,7 +121,7 @@ export default function Question({
         <div className="grid grid-rows-6 gap-2">
           {[...Array(6)].map((_, rowIndex) => (
             <div key={rowIndex} className="flex space-x-2">
-              <span className="font-mono">{strings[rowIndex]}</span>
+              <span className="font-mono">{guitarStrings[rowIndex]}</span>
               {[...Array(8)].map((_, colIndex) => (
                 <label key={colIndex} className="flex items-center">
                   <input
@@ -146,8 +154,10 @@ export default function Question({
           </button>
         )}
         {isCorrect !== null && (
-          <div className={`mt-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-            {isCorrect ? 'Correct!' : 'Incorrect, try again'}
+          <div
+            className={`mt-2 ${isCorrect ? "text-green-600" : "text-red-600"}`}
+          >
+            {isCorrect ? "Correct!" : "Incorrect, try again"}
           </div>
         )}
       </div>

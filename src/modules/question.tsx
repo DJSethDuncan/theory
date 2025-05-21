@@ -1,27 +1,26 @@
 import { getModeQuestion } from "./modes";
 import { getIntervalQuestion } from "./intervals";
 
-const possibleQuestionTopics = ["intervals"];
+const possibleQuestionTopics = ["modes", "intervals"];
 
 type TQuestionTopic = "modes" | "intervals";
-type TQuestionType = "msq" | "interval";
 
 type TBaseQuestion = {
   topic: TQuestionTopic;
   question: string;
   extraText?: string;
-}
+};
 
 type TMSQQuestion = TBaseQuestion & {
   type: "msq";
   msqCorrectAnswers: string[];
   msqOptions: string[];
-}
+};
 
 type TIntervalQuestion = TBaseQuestion & {
   type: "interval";
   meta: string;
-}
+};
 
 export type TQuestion = TMSQQuestion | TIntervalQuestion;
 
