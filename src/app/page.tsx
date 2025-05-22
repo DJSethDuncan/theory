@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getQuestion, type TQuestion, type TQuestionTopic } from "@/modules/question";
 import { config } from "@/modules/config";
 import Box from "@/components/box";
@@ -12,14 +12,14 @@ export default function Home() {
   const [thisQuestion, setThisQuestion] = useState<TQuestion | null>(null);
   const [topics, setTopics] = useState<TQuestionTopic[]>(config.possibleQuestionTopics);
 
-  const loadQuestion = () => {
+  const loadQuestion = useCallback(() => {
     const question = getQuestion({topics});
     setThisQuestion(question);
-  };
+  }, [topics]);
 
   useEffect(() => {
     loadQuestion();
-  }, [topics]);
+  }, [loadQuestion]);
 
   const handleGetNextQuestion = () => {
     loadQuestion();
