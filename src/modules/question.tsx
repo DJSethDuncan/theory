@@ -1,6 +1,5 @@
 import { getModeQuestion } from "./modes";
 import { getIntervalQuestion } from "./intervals";
-import { config } from "./config";
 
 export type TQuestionTopic = "modes" | "intervals";
 

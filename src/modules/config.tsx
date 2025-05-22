@@ -6,6 +6,6 @@ type TConfig = {
 }
 
 export const config: TConfig = {
-  msqOptionCount: 4,
+  msqOptionCount: 5,
   possibleQuestionTopics: ["modes", "intervals"],
 }
