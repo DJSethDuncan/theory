@@ -1,6 +1,7 @@
 import type { TMSQQuestion } from "@/modules/question";
 import Button from "./button";
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import Box from "./box";
 
 export default function MultipleSelectQuestion({
   question,
@@ -44,7 +45,7 @@ export default function MultipleSelectQuestion({
   };
 
   return (
-    <div>
+    <Box>
       <div className="space-y-2">
         {question.msqOptions.map((option) => (
           <label
@@ -66,6 +67,6 @@ export default function MultipleSelectQuestion({
           Submit Answer
         </Button>
       )}
-    </div>
+    </Box>
   );
 }

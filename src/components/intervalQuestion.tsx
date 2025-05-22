@@ -1,7 +1,7 @@
 import { guitarStrings } from "@/modules/constants";
 import { scoreIntervals } from "@/modules/intervals";
 import Button from "./button";
-
+import Box from "./box";
 import type { TIntervalQuestion } from "@/modules/question";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
@@ -25,9 +25,9 @@ export default function IntervalQuestion({
   useEffect(() => {
     clearCheckedBoxes();
   }, [question]);
-  
+
   const clearCheckedBoxes = () => {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"].interval-checkbox');
     checkboxes.forEach((checkbox) => {
       (checkbox as HTMLInputElement).checked = false;
       (checkbox as HTMLInputElement).disabled = false;
@@ -41,7 +41,7 @@ export default function IntervalQuestion({
   };
 
   const handleIntervalChange = () => {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"].interval-checkbox');
     const intervals: [number, number][] = [];
     checkboxes.forEach((checkbox) => {
       if ((checkbox as HTMLInputElement).checked) {
@@ -65,7 +65,7 @@ export default function IntervalQuestion({
   };
 
   return (
-    <div>
+    <Box>
       <div className="grid grid-rows-6 gap-2">
         {[...Array(6)].map((_, rowIndex) => (
           <div key={rowIndex} className="flex space-x-2">
@@ -74,7 +74,7 @@ export default function IntervalQuestion({
               <label key={colIndex} className="flex items-center">
                 <input
                   type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="interval-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   data-x={colIndex}
                   data-y={rowIndex}
                   onChange={() => handleIntervalChange()}
@@ -89,6 +89,6 @@ export default function IntervalQuestion({
           Submit Answer
         </Button>
       )}
-    </div>
+    </Box>
   );
 }

@@ -1,29 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getQuestion, type TQuestion } from "@/modules/question";
+import { getQuestion, type TQuestion, type TQuestionTopic } from "@/modules/question";
+import { config } from "@/modules/config";
+import Box from "@/components/box";
+import Header from "@/components/header";
 import Question from "@/components/question";
 
 export default function Home() {
   
   const [thisQuestion, setThisQuestion] = useState<TQuestion | null>(null);
-  
+  const [topics, setTopics] = useState<TQuestionTopic[]>(config.possibleQuestionTopics);
+
   useEffect(() => {
     loadQuestion();
-  }, []);
+  }, [topics]);
 
-  const handleQuestionSubmit = () => {
+  const handleGetNextQuestion = () => {
     loadQuestion();
   };
 
   const loadQuestion = () => {
-    const question = getQuestion();
+    const question = getQuestion({topics});
     setThisQuestion(question);
   };
 
   return (
     <div>
-      {thisQuestion && <Question question={thisQuestion} onSubmit={handleQuestionSubmit} />}
+      <Header topics={topics} setTopics={setTopics} />
+      {topics.length > 0 && thisQuestion && <Question question={thisQuestion} getNextQuestion={handleGetNextQuestion} />}
+      {topics.length === 0 && <Box>No topics selected</Box>}
     </div>
   );
 }

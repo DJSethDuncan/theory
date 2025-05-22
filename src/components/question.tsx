@@ -6,10 +6,10 @@ import Button from "./button";
 
 export default function Question({
   question,
-  onSubmit,
+  getNextQuestion,
 }: {
   question: TQuestion;
-  onSubmit: () => void;
+  getNextQuestion: () => void;
 }) {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -43,7 +43,7 @@ export default function Question({
       )}
       <div className="mt-4 space-x-4">
         {hasSubmitted && (
-          <Button onClick={onSubmit}>
+          <Button onClick={getNextQuestion}>
             Next Question
           </Button>
         )}
