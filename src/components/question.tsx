@@ -3,6 +3,7 @@ import IntervalQuestion from "./intervalQuestion";
 import MultipleSelectQuestion from "./multipleSelectQuestion";
 import { useState, useEffect } from "react";
 import Button from "./button";
+import Box from "./box";
 
 export default function Question({
   question,
@@ -19,8 +20,16 @@ export default function Question({
     setHasSubmitted(false);
   }, [question]);
 
+  const nextQuestionButton = (
+    <Box>
+      <Button onClick={getNextQuestion}>
+        Next Question
+      </Button>
+    </Box>
+  );
+
   return (
-    <div className="p-4">
+    <Box>
       <div className="text-lg font-medium mb-4">{question.question}</div>
       {question.extraText && (
         <div className="text-sm text-gray-500 mb-4">{question.extraText}</div>
@@ -31,6 +40,11 @@ export default function Question({
           answerCheck={setIsCorrect}
           hasSubmitted={hasSubmitted}
           setHasSubmitted={setHasSubmitted}
+          children={
+            hasSubmitted && (
+              nextQuestionButton
+            )
+          }
         />
       )}
       {question.type === "interval" && (
@@ -39,22 +53,22 @@ export default function Question({
           answerCheck={setIsCorrect}
           hasSubmitted={hasSubmitted}
           setHasSubmitted={setHasSubmitted}
+          children={
+            hasSubmitted && (
+              nextQuestionButton
+            )
+          }
         />
       )}
-      <div className="mt-4 space-x-4">
-        {hasSubmitted && (
-          <Button onClick={getNextQuestion}>
-            Next Question
-          </Button>
-        )}
+      <Box>
         {isCorrect !== null && (
           <div
-            className={`mt-2 ${isCorrect ? "text-green-600" : "text-red-600"}`}
+            className={`${isCorrect ? "text-green-600" : "text-red-600"}`}
           >
             {isCorrect ? "Correct!" : "Incorrect, try again"}
           </div>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

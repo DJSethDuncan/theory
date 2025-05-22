@@ -8,13 +8,16 @@ export default function MultipleSelectQuestion({
   hasSubmitted,
   answerCheck,
   setHasSubmitted,
+  children,
 }: {
   question: TMSQQuestion;
   hasSubmitted: boolean;
   answerCheck: Dispatch<SetStateAction<boolean | null>>;
   setHasSubmitted: Dispatch<SetStateAction<boolean>>;
+  children: React.ReactNode;
 }) {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleOptionChange = (option: string) => {
     setSelectedOptions((prev) => {
@@ -28,6 +31,10 @@ export default function MultipleSelectQuestion({
   useEffect(() => {
     setSelectedOptions([]);
   }, [question]);
+
+  useEffect(() => {
+    setIsDisabled(selectedOptions.length === 0);
+  }, [selectedOptions]);
 
   const handleSubmit = () => {
     const selectedOptionsAreCorrect = selectedOptions.every((option) =>
@@ -63,10 +70,13 @@ export default function MultipleSelectQuestion({
         ))}
       </div>
       {!hasSubmitted && (
-        <Button onClick={handleSubmit}>
-          Submit Answer
-        </Button>
+        <Box>
+          <Button onClick={handleSubmit} type={isDisabled ? "secondary" : "primary"} disabled={isDisabled}>
+            Submit Answer
+          </Button>
+        </Box>
       )}
+      {children}
     </Box>
   );
 }

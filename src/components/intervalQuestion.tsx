@@ -12,15 +12,19 @@ export default function IntervalQuestion({
   hasSubmitted,
   answerCheck,
   setHasSubmitted,
+  children,
 }: {
   question: TIntervalQuestion;
   hasSubmitted: boolean;
   answerCheck: Dispatch<SetStateAction<boolean | null>>;
   setHasSubmitted: Dispatch<SetStateAction<boolean>>;
+  children: React.ReactNode;
 }) {
   const [selectedIntervals, setSelectedIntervals] = useState<
     [number, number][]
   >([]);
+
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     clearCheckedBoxes();
@@ -52,12 +56,14 @@ export default function IntervalQuestion({
     });
     setSelectedIntervals(intervals);
     if (intervals.length === 2) {
+      setIsDisabled(false);
       checkboxes.forEach((checkbox) => {
         if (!(checkbox as HTMLInputElement).checked) {
           (checkbox as HTMLInputElement).disabled = true;
         }
       });
     } else {
+      setIsDisabled(true);
       checkboxes.forEach((checkbox) => {
         (checkbox as HTMLInputElement).disabled = false;
       });
@@ -69,26 +75,29 @@ export default function IntervalQuestion({
       <div className="grid grid-rows-6 gap-2">
         {[...Array(6)].map((_, rowIndex) => (
           <div key={rowIndex} className="flex space-x-2">
-            <span className="font-mono">{guitarStrings[rowIndex]} |--</span>
+            <span className="font-mono">{guitarStrings[rowIndex]}</span>
             {[...Array(8)].map((_, colIndex) => (
               <label key={colIndex} className="flex items-center">
                 <input
                   type="checkbox"
-                  className="interval-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className={`interval-checkbox h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 `}
                   data-x={colIndex}
                   data-y={rowIndex}
                   onChange={() => handleIntervalChange()}
-                /> &nbsp; --|--
+                /> &nbsp; {colIndex > 0 ? "--|--" : "--"}
               </label>
             ))}
           </div>
         ))}
       </div>
       {!hasSubmitted && (
-        <Button onClick={handleSubmit}>
-          Submit Answer
-        </Button>
+        <Box>
+          <Button onClick={handleSubmit} type={isDisabled ? 'secondary' : 'primary'} disabled={isDisabled}>
+            Submit Answer
+          </Button>
+        </Box>
       )}
+      {children}
     </Box>
   );
 }

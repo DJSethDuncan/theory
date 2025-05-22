@@ -32,10 +32,24 @@ export const scoreIntervals = (
   const stringDifference = lowestString - highestString;
   const fretDifference = highestNote[0] - lowestNote[0];
   let halfStepsBetweenNotes = fretDifference + stringDifference * 5;
-  if (highestString === 1 && lowestString > highestString) {
+
+  // account for the B string being a 3rd instead of 4th
+  if (lowestString > 1 && highestString <= 1) {
     halfStepsBetweenNotes--;
   }
 
+  // account for when people invert selections by clicking high number frets on low strings
+  halfStepsBetweenNotes = Math.abs(halfStepsBetweenNotes);
+
+  // account for octaves
+  while (halfStepsBetweenNotes > 12) {
+    halfStepsBetweenNotes -= 12;
+  }
+
+  // account for unison
+  if (halfStepsBetweenNotes === 0) { return false; }
+
+  // get the interval from the half steps
   const thisInterval = (intervals.intervalsByHalfSteps as THalfStepIntervals)[
     halfStepsBetweenNotes.toString()
   ];
