@@ -1,5 +1,6 @@
 import { guitarStrings } from "@/modules/constants";
 import { scoreIntervals } from "@/modules/intervals";
+import Button from "./button";
 
 import type { TIntervalQuestion } from "@/modules/question";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -56,7 +57,7 @@ export default function IntervalQuestion({
       <div className="grid grid-rows-6 gap-2">
         {[...Array(6)].map((_, rowIndex) => (
           <div key={rowIndex} className="flex space-x-2">
-            <span className="font-mono">{guitarStrings[rowIndex]}</span>
+            <span className="font-mono">{guitarStrings[rowIndex]} |--</span>
             {[...Array(8)].map((_, colIndex) => (
               <label key={colIndex} className="flex items-center">
                 <input
@@ -65,19 +66,16 @@ export default function IntervalQuestion({
                   data-x={colIndex}
                   data-y={rowIndex}
                   onChange={() => handleIntervalChange()}
-                />
+                /> &nbsp; --|--
               </label>
             ))}
           </div>
         ))}
       </div>
       {!hasSubmitted && (
-        <button
-          onClick={handleSubmit}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        <Button onClick={handleSubmit}>
           Submit Answer
-        </button>
+        </Button>
       )}
     </div>
   );

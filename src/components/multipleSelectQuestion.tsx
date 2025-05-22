@@ -1,4 +1,5 @@
 import type { TMSQQuestion } from "@/modules/question";
+import Button from "./button";
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 export default function MultipleSelectQuestion({
@@ -61,12 +62,9 @@ export default function MultipleSelectQuestion({
         ))}
       </div>
       {!hasSubmitted && (
-        <button
-          onClick={handleSubmit}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        <Button onClick={handleSubmit}>
           Submit Answer
-        </button>
+        </Button>
       )}
     </div>
   );

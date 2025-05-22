@@ -42,7 +42,7 @@ export const getModeQuestion = (): TQuestion => {
       return {
         topic: "modes",
         type: "msq",
-        question: `Which mode is this?`,
+        question: `Which mode includes these intervals?`,
         extraText: "R, " + randomMode.intervals.join(", "), // gotta have the root I guess
         msqCorrectAnswers: [randomMode.name],
         msqOptions: modesArray.map((mode) => mode.name),

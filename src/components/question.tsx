@@ -2,6 +2,7 @@ import type { TQuestion } from "@/modules/question";
 import IntervalQuestion from "./intervalQuestion";
 import MultipleSelectQuestion from "./multipleSelectQuestion";
 import { useState, useEffect } from "react";
+import Button from "./button";
 
 export default function Question({
   question,
@@ -51,12 +52,9 @@ export default function Question({
       )}
       <div className="mt-4 space-x-4">
         {hasSubmitted && (
-          <button
-            onClick={onSubmit}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
+          <Button onClick={onSubmit}>
             Next Question
-          </button>
+          </Button>
         )}
         {isCorrect !== null && (
           <div
