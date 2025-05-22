@@ -12,17 +12,17 @@ export default function Home() {
   const [thisQuestion, setThisQuestion] = useState<TQuestion | null>(null);
   const [topics, setTopics] = useState<TQuestionTopic[]>(config.possibleQuestionTopics);
 
+  const loadQuestion = () => {
+    const question = getQuestion({topics});
+    setThisQuestion(question);
+  };
+
   useEffect(() => {
     loadQuestion();
   }, [topics]);
 
   const handleGetNextQuestion = () => {
     loadQuestion();
-  };
-
-  const loadQuestion = () => {
-    const question = getQuestion({topics});
-    setThisQuestion(question);
   };
 
   return (
