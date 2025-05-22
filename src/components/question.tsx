@@ -40,12 +40,11 @@ export default function Question({
           answerCheck={setIsCorrect}
           hasSubmitted={hasSubmitted}
           setHasSubmitted={setHasSubmitted}
-          children={
-            hasSubmitted && (
-              nextQuestionButton
-            )
-          }
-        />
+        >
+          {hasSubmitted && (
+            nextQuestionButton
+          )}
+        </MultipleSelectQuestion>
       )}
       {question.type === "interval" && (
         <IntervalQuestion
@@ -53,12 +52,11 @@ export default function Question({
           answerCheck={setIsCorrect}
           hasSubmitted={hasSubmitted}
           setHasSubmitted={setHasSubmitted}
-          children={
-            hasSubmitted && (
-              nextQuestionButton
-            )
-          }
-        />
+        >
+          {hasSubmitted && (
+            nextQuestionButton
+          )}
+        </IntervalQuestion>
       )}
       <Box>
         {isCorrect !== null && (
