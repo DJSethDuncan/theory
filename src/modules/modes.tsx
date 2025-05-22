@@ -1,4 +1,5 @@
 import { modesEasy, intervals } from "@/modules/constants";
+import { config } from "@/modules/config";
 import type { TQuestion } from "./question";
 
 type TModeQuestionType = "intervalMSQ" | "identify";
@@ -16,8 +17,8 @@ export const getModeQuestion = (): TQuestion => {
 
   switch (questionType) {
     case "intervalMSQ":
-      const correctAnswersCount = Math.floor(Math.random() * 4) + 1;
-      const incorrectAnswersCount = 4 - correctAnswersCount;
+      const correctAnswersCount = Math.floor(Math.random() * config.msqOptionCount) + 1;
+      const incorrectAnswersCount = config.msqOptionCount - correctAnswersCount;
 
       const correctAnswers = getCorrectAnswers(
         randomMode.intervals,

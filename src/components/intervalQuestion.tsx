@@ -3,7 +3,7 @@ import { scoreIntervals } from "@/modules/intervals";
 import Button from "./button";
 
 import type { TIntervalQuestion } from "@/modules/question";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 // @TODO: this should change to a "fretboard" question of which "Interval" is a subtype
 // maybe someday there is a "keyboard" question type that shows piano keys
@@ -21,6 +21,18 @@ export default function IntervalQuestion({
   const [selectedIntervals, setSelectedIntervals] = useState<
     [number, number][]
   >([]);
+
+  useEffect(() => {
+    clearCheckedBoxes();
+  }, [question]);
+  
+  const clearCheckedBoxes = () => {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+      (checkbox as HTMLInputElement).checked = false;
+      (checkbox as HTMLInputElement).disabled = false;
+    });
+  };
 
   const handleSubmit = () => {
     const isAnswerCorrect = scoreIntervals(selectedIntervals, question.meta);

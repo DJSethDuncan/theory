@@ -1,7 +1,6 @@
 import { getModeQuestion } from "./modes";
 import { getIntervalQuestion } from "./intervals";
-
-const possibleQuestionTopics = ["modes", "intervals"];
+import { config } from "./config";
 
 type TQuestionTopic = "modes" | "intervals";
 
@@ -25,8 +24,8 @@ export type TIntervalQuestion = TBaseQuestion & {
 export type TQuestion = TMSQQuestion | TIntervalQuestion;
 
 export const getQuestion = (): TQuestion => {
-  const randomIndex = Math.floor(Math.random() * possibleQuestionTopics.length);
-  const questionTopic = possibleQuestionTopics[randomIndex];
+  const randomIndex = Math.floor(Math.random() * config.possibleQuestionTopics.length);
+  const questionTopic = config.possibleQuestionTopics[randomIndex];
 
   switch (questionTopic) {
     case "modes":
