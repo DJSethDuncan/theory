@@ -1,4 +1,4 @@
-import { intervals } from "@/modules/constants";
+import { intervals, natLangIntervalMap } from "@/modules/constants";
 import { TQuestion } from "./question";
 
 type THalfStepIntervals = {
@@ -12,7 +12,7 @@ export const getIntervalQuestion = (): TQuestion => {
   return {
     type: "interval",
     topic: "intervals",
-    question: `Select the notes to create the ${randomInterval} interval`,
+    question: `Select the notes to create a ${natLangIntervalMap[randomInterval as keyof typeof natLangIntervalMap] } interval`,
     meta: randomInterval,
   };
 };

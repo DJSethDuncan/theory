@@ -14,16 +14,7 @@ export default function Question({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const clearCheckedBoxes = () => {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach((checkbox) => {
-      (checkbox as HTMLInputElement).checked = false;
-      (checkbox as HTMLInputElement).disabled = false;
-    });
-  };
-
   useEffect(() => {
-    clearCheckedBoxes();
     setIsCorrect(null);
     setHasSubmitted(false);
   }, [question]);

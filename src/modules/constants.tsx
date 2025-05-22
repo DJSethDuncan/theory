@@ -31,6 +31,24 @@ export const intervals = {
   },
 };
 
+type TIntervalName = "b2" | "2" | "#2" | "b3" | "3" | "#3" | "4" | "b5" | "5" | "#5" | "6" | "m7" | "M7";
+
+export const natLangIntervalMap: Record<TIntervalName, string> = {
+  "b2": "flat second",
+  "2": "second",
+  "#2": "sharp second",
+  "b3": "flat third",
+  "3": "third",
+  "#3": "sharp third",
+  "4": "fourth",
+  "b5": "flat fifth",
+  "5": "fifth",
+  "#5": "sharp fifth",
+  "6": "sixth",
+  "m7": "minor seventh",
+  "M7": "major seventh",
+}
+
 export const modesEasy = {
   Ionian: {
     intervals: ["2", "3", "4", "5", "6", "M7"],

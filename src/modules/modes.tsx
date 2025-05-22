@@ -31,7 +31,7 @@ export const getModeQuestion = (): TQuestion => {
       return {
         topic: "modes",
         type: "msq",
-        question: `Which intervals are in the ${randomMode.name} mode?`,
+        question: `Which of these intervals are in the ${randomMode.name} mode?`,
         msqCorrectAnswers: randomMode.intervals,
         msqOptions: [...correctAnswers, ...incorrectAnswers].sort(
           () => Math.random() - 0.5
